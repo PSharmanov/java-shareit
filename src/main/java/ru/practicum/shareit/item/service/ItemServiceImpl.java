@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.service;
 
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -32,8 +31,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item createItem(ItemDto itemDto, Long ownerId) {
         log.info("Запрос на создание вещи: Получен.");
-
-        validItemDtoForCreate(itemDto);
 
         userService.findById(ownerId);
 
@@ -97,7 +94,9 @@ public class ItemServiceImpl implements ItemService {
         List<Item> itemList = findAllItemsFromUser(ownerId);
 
         List<Item> filteredItems = itemList.stream()
-                .filter(item -> item.getAvailable() && item.getName().toLowerCase().contains(text.toLowerCase()))
+                .filter(item -> item.getAvailable()
+                        && (item.getName().toLowerCase().contains(text.toLowerCase())
+                        || item.getDescription().toLowerCase().contains(text.toLowerCase())))
                 .collect(Collectors.toList());
 
         log.info("Запрос на поиск предметов пользователя с id = {}: Выполнен.", ownerId);
@@ -105,24 +104,6 @@ public class ItemServiceImpl implements ItemService {
         return filteredItems;
     }
 
-    //проверка правильности itmDto при создании предмета
-    private void validItemDtoForCreate(ItemDto itemDto) {
-        if (itemDto.getAvailable() == null) {
-            log.error("Не установлен статус бронирования");
-            throw new ValidationException("Не установлен статут бронирования предмета.");
-        }
-
-        if (itemDto.getName() == null || itemDto.getName().isBlank()) {
-            log.error("Не заполнено название предмета.");
-            throw new ValidationException("Не заполнено название предмета.");
-        }
-
-        if (itemDto.getDescription() == null) {
-            log.error("Не заполнено описание предмета.");
-            throw new ValidationException("Не заполнено описание предмета.");
-        }
-
-    }
 
     //обновление предмета по данным из Dto
     public void updateItemFromDto(ItemDto itemDto, Item item) {

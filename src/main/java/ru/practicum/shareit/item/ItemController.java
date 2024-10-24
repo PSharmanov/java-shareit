@@ -31,7 +31,7 @@ public class ItemController {
 
 
     @PatchMapping("/{itemId}")
-    public Item updateItemById(@Valid @RequestBody ItemDto itemDto,
+    public Item updateItemById(@RequestBody ItemDto itemDto,
                                @PathVariable("itemId") Long itemId,
                                @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Получен запрос на обновление вещи");
