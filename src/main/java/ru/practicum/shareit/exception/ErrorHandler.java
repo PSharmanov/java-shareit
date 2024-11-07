@@ -37,5 +37,12 @@ public class ErrorHandler {
         return new ErrorResponse("Ошибка 409 - данные от пользователя дублируются и не могут быть обработаны:", e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handlerBookingApprovalForbiddenException(final BookingApprovalForbiddenException e) {
+        log.error(e.getMessage());
+        return new ErrorResponse("Ошибка 403 - бронирование не может быть одобрено этим пользователем.:", e.getMessage());
+    }
+
 
 }

@@ -3,7 +3,7 @@ package ru.practicum.shareit.user;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 /**
@@ -21,28 +21,28 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
+    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
         log.info("Получен запрос на создание пользователя.");
-        return userService.create(user);
+        return userService.create(userDto);
     }
 
     @GetMapping("/{id}")
-    public User findUserById(@PathVariable("id") Long userId) {
+    public UserDto getUserById(@PathVariable("id") Long userId) {
         log.info("Получен запрос на получение пользователя с id = {}.", userId);
-        return userService.findById(userId);
+        return userService.getUserById(userId);
     }
 
     @DeleteMapping("/{id}")
-    public void removeUserById(@PathVariable("id") Long userId) {
+    public void deleteUserById(@PathVariable("id") Long userId) {
         log.info("Получен запрос на удаление пользователя с id = {}.", userId);
-        userService.remove(userId);
+        userService.delete(userId);
     }
 
     @PatchMapping("/{id}")
-    public User updateUser(@RequestBody User user,
-                           @PathVariable("id") Long userId) {
+    public UserDto updateUser(@RequestBody UserDto userDto,
+                              @PathVariable("id") Long userId) {
         log.info("Получен запрос на обновление данных пользователя с id = {}.", userId);
-        return userService.update(userId, user);
+        return userService.update(userId, userDto);
     }
 
 

@@ -4,6 +4,10 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import ru.practicum.shareit.user.entity.User;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * TODO Sprint add-controllers.
@@ -11,6 +15,8 @@ import lombok.Data;
 @Data
 @Builder
 public class ItemDto {
+    private Long id;
+
     @NotNull
     @NotEmpty
     private String name;
@@ -20,4 +26,13 @@ public class ItemDto {
 
     @NotNull
     private Boolean available;
+
+    private User owner;
+
+    private List<Long> comments;
+
+    private LocalDateTime lastBooking;
+
+    private LocalDateTime nextBooking;
+
 }
