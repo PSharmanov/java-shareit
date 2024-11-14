@@ -13,7 +13,9 @@ import java.util.List;
 @Table(name = "items")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class Item {
 
     @Id
@@ -34,7 +36,7 @@ public class Item {
     private Boolean available;
 
     @ElementCollection
-    @CollectionTable(name = "comments", joinColumns=@JoinColumn(name="item_id"))
+    @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "item_id"))
     @Column(name = "id")
     private List<Long> comments;
 }

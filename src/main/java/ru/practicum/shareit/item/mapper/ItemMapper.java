@@ -9,6 +9,7 @@ import ru.practicum.shareit.user.entity.User;
 public interface ItemMapper {
 
     ItemDto toDto(Item item);
+
     Item toEntity(ItemDto itemDto);
 
 

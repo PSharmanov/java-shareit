@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class Comment {
 
     @Id

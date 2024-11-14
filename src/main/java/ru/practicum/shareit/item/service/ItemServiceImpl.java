@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
         this.bookingRepository = bookingRepository;
     }
 
-    private void validateUser (Long userId) {
+    private void validateUser(Long userId) {
         userService.getUserById(userId);
     }
 
@@ -124,7 +124,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> searchItems(String text, Long ownerId) {
         log.info("Запрос на поиск предметов пользователя с id = {}: Получен.", ownerId);
 
-        validateUser (ownerId);
+        validateUser(ownerId);
 
         if (text == null || text.isBlank()) {
             return Collections.emptyList();

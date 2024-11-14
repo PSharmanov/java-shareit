@@ -24,13 +24,13 @@ public class BookingController {
 
     @PostMapping
     public BookingDto createBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                    @Valid @RequestBody BookingDtoCreate newBooking){
+                                    @Valid @RequestBody BookingDtoCreate newBooking) {
         log.info("Получен запрос на бронирование вещи.");
         return bookingService.createBooking(newBooking, userId);
     }
 
     @GetMapping
-    public List<BookingDto> findAllUserBookings(@RequestHeader("X-Sharer-User-Id") Long userId){
+    public List<BookingDto> findAllUserBookings(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Получен запрос получение всех вещей бронируемых пользователем.");
         return bookingService.getAllUserBookings(userId);
     }
@@ -44,21 +44,17 @@ public class BookingController {
 
     @PatchMapping("/{bookingId}")
     public BookingDto approvedBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                     @PathVariable(name = "bookingId") Long bookingId,
-                                     @RequestParam(name = "approved", defaultValue = "false") Boolean approved){
+                                      @PathVariable(name = "bookingId") Long bookingId,
+                                      @RequestParam(name = "approved", defaultValue = "false") Boolean approved) {
         log.info("Получен запрос на одобрение бронирования.");
         return bookingService.approvedBooking(userId, bookingId, approved);
     }
 
     @GetMapping("/owner")
-    public List<BookingDto> findAllBookingsByOwner(@RequestHeader("X-Sharer-User-Id") Long userId){
+    public List<BookingDto> findAllBookingsByOwner(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Получен запрос на получение всех вещей владельца.");
         return bookingService.getAllBookingsByOwner(userId);
     }
-
-
-
-
 
 
 }
