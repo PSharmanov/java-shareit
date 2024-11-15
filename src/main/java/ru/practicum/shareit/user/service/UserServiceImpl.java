@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toEntity(userDto);
 
-        if (userRepository.isUsersContainsEmail(user.getEmail())) {
+        if (userRepository.existsUserByEmail(user.getEmail())) {
             log.error("Email уже используется.");
             throw new EmailConflictException("Email уже используется");
         }
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         String email = userDto.getEmail();
         String name = userDto.getName();
 
-        if (userRepository.isUsersContainsEmail(email)) {
+        if (userRepository.existsUserByEmail(email)) {
             log.error("Email уже используется.");
             throw new EmailConflictException("Email уже используется");
         }
