@@ -6,6 +6,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.user.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,5 +73,45 @@ class ItemMapperTest {
         assertEquals("Test Update Description", updateItem.getDescription());
         assertTrue(item.getAvailable());
 
+    }
+
+    @Test
+    void testUpdateItem_ItemDtoNull() {
+        User owner = new User(1L, "Test User", "test@mail.com");
+        Item item = new Item(1L, owner, "Test Item", "Test Description", false, 1L, List.of(1L, 2L));
+
+        Item updateItem = mapper.updateItem(null, item);
+
+        assertEquals(item, updateItem);
+
+    }
+
+    @Test
+    void testUpdateItem_whereCommentNotNull() {
+        Item item = new Item();
+        item.setId(1L);
+        item.setName("testItem");
+        item.setDescription("Test description");
+        item.setAvailable(true);
+        item.setRequestId(123L);
+
+        ItemDto itemDto = new ItemDto();
+        itemDto.setName("updatedItem");
+        itemDto.setDescription("Updated description");
+        itemDto.setAvailable(false);
+        itemDto.setRequestId(456L);
+
+        List<Long> comments = new ArrayList<>();
+        comments.add(1L);
+        itemDto.setComments(comments);
+
+        Item updatedItem = mapper.updateItem(itemDto, item);
+
+        assertEquals(item.getId(), updatedItem.getId());
+        assertEquals(itemDto.getName(), updatedItem.getName());
+        assertEquals(itemDto.getDescription(), updatedItem.getDescription());
+        assertEquals(itemDto.getAvailable(), updatedItem.getAvailable());
+        assertEquals(itemDto.getRequestId(), updatedItem.getRequestId());
+        assertEquals(itemDto.getComments(), updatedItem.getComments());
     }
 }

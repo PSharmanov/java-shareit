@@ -1,22 +1,29 @@
 package ru.practicum.shareit.item.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.practicum.shareit.booking.entity.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.comments.CommentMapper;
+import ru.practicum.shareit.item.comments.CommentMapperImpl;
 import ru.practicum.shareit.item.comments.CommentRepository;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.mapper.UserMapperImpl;
 import ru.practicum.shareit.user.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +33,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class})
 class ItemServiceImplTest {
 
     @Mock
@@ -34,18 +41,24 @@ class ItemServiceImplTest {
     @Mock
     private UserService userService;
     @Mock
-    private UserMapper userMapper;
-    @Mock
     private ItemRepository itemRepository;
     @Mock
     private CommentRepository commentRepository;
     @Mock
-    private CommentMapper commentMapper;
-    @Mock
     private BookingRepository bookingRepository;
+    @Mock
+    private UserMapper userMapper;
+    @Mock
+    private CommentMapper commentMapper;
 
     @InjectMocks
     private ItemServiceImpl itemService;
+
+    @BeforeEach
+    void setUp() {
+        userMapper = new UserMapperImpl();
+        commentMapper = new CommentMapperImpl();
+    }
 
     @Test
     void createItem() {
@@ -164,5 +177,33 @@ class ItemServiceImplTest {
         assertTrue(result.isEmpty());
     }
 
+
+    @Test
+    public void testGetCommentWithNullBooking() {
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(new Item()));
+        when(userService.getUserById(1L)).thenReturn(new UserDto());
+        when(bookingRepository.findByItemIdAndBookerId(1L, 1L)).thenReturn(null);
+
+        assertThrows(ValidationException.class, () -> {
+            itemService.getComment(1L, "Test comment", 1L);
+        });
+    }
+
+    @Test
+    public void testGetCommentWithBookingNotEnded() {
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(new Item()));
+        when(userService.getUserById(1L)).thenReturn(new UserDto());
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        Booking booking = new Booking();
+        booking.setId(1L);
+        booking.setEnd(currentTime.plusDays(1));
+
+        when(bookingRepository.findByItemIdAndBookerId(1L, 1L)).thenReturn(booking);
+
+        assertThrows(ValidationException.class, () -> {
+            itemService.getComment(1L, "Test comment", 1L);
+        });
+    }
 
 }

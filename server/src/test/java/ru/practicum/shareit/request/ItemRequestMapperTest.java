@@ -25,20 +25,19 @@ class ItemRequestMapperTest {
         // assertNotNull(itemRequest.getCreated()); //Instant is not null
     }
 
-//    @Test
-//    void toEntity_nullRequestDto() {
-//        Long userId = 1L;
-//        ItemRequest itemRequest = mapper.toEntity(userId, null);
-//        assertNull(itemRequest);
-//    }
+    @Test
+    void toEntity_nullUserIdAndRequestDto() {
+        ItemRequest itemRequest = mapper.toEntity(null, null);
+        assertNull(itemRequest);
+    }
 
-//    @Test
-//    void toEntity_nullUserId() {
-//        ItemRequestDto requestDto = new ItemRequestDto();
-//        requestDto.setDescription("Test request");
-//        ItemRequest itemRequest = mapper.toEntity(null, requestDto);
-//        assertNull(itemRequest);
-//    }
+    @Test
+    void toEntity_nullUserId() {
+        ItemRequestDto requestDto = new ItemRequestDto();
+        ItemRequest itemRequest = mapper.toEntity(null, requestDto);
+        assertNotNull(itemRequest);
+    }
+
 
     @Test
     void toDto() {

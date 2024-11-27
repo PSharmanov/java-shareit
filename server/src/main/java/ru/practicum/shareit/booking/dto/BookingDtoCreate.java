@@ -16,11 +16,9 @@ public class BookingDtoCreate {
     private Long itemId;
 
     @NotNull
-    // @FutureOrPresent(message = "Дата начала бронирования задана неверно!")
     private LocalDateTime start;
 
     @NotNull
-    //@Future(message = "Дата окончания бронирования задана неверно!")
     private LocalDateTime end;
 
 
