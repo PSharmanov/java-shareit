@@ -15,8 +15,7 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 import java.time.Instant;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,10 +79,13 @@ class ItemRequestControllerIT {
         ItemRequestDto requestDto = new ItemRequestDto();
         requestDto.setDescription("Test request");
 
-        when(itemRequestService.getAllRequests()).thenReturn(List.of(requestDto));
+        when(itemRequestService.getAllRequests(anyInt(), anyLong())).thenReturn(List.of(requestDto));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/requests/all")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-Sharer-User-Id", 1L)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].description").value("Test request"));
     }

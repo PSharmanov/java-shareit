@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class ItemRequestRepositoryIT {
+class ItemRequestRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -39,11 +39,12 @@ class ItemRequestRepositoryIT {
 
     @Test
     void findByRequestorId() {
-        List<ItemRequest> requests = itemRequestRepository.findByRequestorId(8L);
+        System.out.println(userRepository.findAll());
+        List<ItemRequest> requests = itemRequestRepository.findByRequestorId(1L);
         assertNotNull(requests);
         assertEquals(2, requests.size());
 
-        requests = itemRequestRepository.findByRequestorId(9L);
+        requests = itemRequestRepository.findByRequestorId(2L);
         assertNotNull(requests);
         assertEquals(1, requests.size());
 

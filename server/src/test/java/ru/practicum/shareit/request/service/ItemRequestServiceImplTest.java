@@ -106,7 +106,8 @@ class ItemRequestServiceImplTest {
 
     @Test
     void getAllRequests() {
-        assertNull(itemRequestService.getAllRequests());
+        List<ItemRequestDto> respons = itemRequestService.getAllRequests(anyInt(), anyLong());
+        assertEquals(0, respons.size());
     }
 
     @Test

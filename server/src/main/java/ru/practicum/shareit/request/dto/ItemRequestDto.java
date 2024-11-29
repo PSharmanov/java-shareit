@@ -1,6 +1,5 @@
 package ru.practicum.shareit.request.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 /**
@@ -9,6 +8,5 @@ import lombok.Data;
 
 @Data
 public class ItemRequestDto {
-    @NotEmpty
     private String description;
 }

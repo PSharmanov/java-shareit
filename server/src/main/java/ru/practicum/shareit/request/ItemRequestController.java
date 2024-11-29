@@ -37,9 +37,10 @@ public class ItemRequestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ItemRequestDto>> getAllRequests() {
+    public ResponseEntity<List<ItemRequestDto>> getAllRequests(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Получение списка запросов других пользователей");
-        List<ItemRequestDto> requests = itemRequestService.getAllRequests();
+        List<ItemRequestDto> requests = itemRequestService.getAllRequests(page, userId);
         return ResponseEntity.ok(requests);
     }
 

@@ -16,8 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,9 +66,9 @@ class ItemRequestControllerTest {
         ItemRequestDto requestDto = new ItemRequestDto();
         requestDto.setDescription("Test request");
 
-        when(itemRequestService.getAllRequests()).thenReturn(List.of(requestDto));
+        when(itemRequestService.getAllRequests(anyInt(), anyLong())).thenReturn(List.of(requestDto));
 
-        ResponseEntity<List<ItemRequestDto>> response = itemRequestController.getAllRequests();
+        ResponseEntity<List<ItemRequestDto>> response = itemRequestController.getAllRequests(anyInt(), anyLong());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(List.of(requestDto), response.getBody());
